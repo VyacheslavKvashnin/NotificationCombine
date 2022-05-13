@@ -6,14 +6,28 @@
 //
 
 import UIKit
+import Combine
+
+extension Notification.Name {
+    static let example = Notification.Name("example")
+}
 
 class ViewController: UIViewController {
+    
+    var cancellabel: AnyCancellable?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        self.cancellabel = NotificationCenter.Publisher(
+            center: .default,
+            name: .example,
+            object: nil)
+            .sink(receiveValue: { notification in
+                print(notification)
+            })
+        
+        NotificationCenter.default.post(name: .example, object: nil)
     }
-
-
 }
 
